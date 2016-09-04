@@ -97,57 +97,7 @@ object Huffman {
    */
 
   def makeOrderedLeafList(freqs: List[(Char, Int)]): List[Leaf] = {
-
-    def insert(list: List[(Char, Int)], pair: (Char, Int)): List[(Char, Int)] = {
-
-      def insertIn(leftList: List[(Char, Int)], rightList: List[(Char, Int)], pair: (Char, Int)): List[(Char, Int)] = {
-        if (rightList.isEmpty) {
-          leftList ::: List(pair)
-        }
-        else {
-          if (leftList.head._2 <= pair._2 && rightList.head._2 >= pair._2) leftList ::: List(pair) ::: rightList
-          else {
-            insertIn(leftList ::: List(rightList.head), rightList.tail, pair)
-          }
-        }
-      }
-
-      insertIn(List[(Char, Int)](list.head), list.tail, pair)
-    }
-
-    def convertToLeaf(list: List[(Char, Int)]): List[Leaf] = {
-
-      def convertToLeafAcc(list: List[(Char, Int)], acc: List[Leaf]): List[Leaf] = {
-        if(list.isEmpty) acc
-        else {
-          convertToLeafAcc(list.tail, acc ::: List(Leaf(list.head._1, list.head._2)))
-        }
-      }
-
-      convertToLeafAcc(list, List[Leaf]())
-    }
-
-    def makeOrderedLeafListAcc(freqs: List[(Char, Int)], acc: List[(Char, Int)]): List[(Char, Int)] = {
-      if(freqs.isEmpty) acc
-      else {
-        val freqsHead = freqs.head
-
-        if(!acc.isEmpty) {
-          val accHead = acc.head
-          if(accHead._2 >= freqsHead._2) {
-            makeOrderedLeafListAcc(freqs.tail, freqsHead :: acc)
-          }
-          else {
-            makeOrderedLeafListAcc(freqs.tail, insert(acc, freqsHead))
-          }
-        }
-        else {
-          makeOrderedLeafListAcc(freqs.tail, freqsHead :: acc)
-        }
-      }
-    }
-
-    convertToLeaf(makeOrderedLeafListAcc(freqs, List[(Char, Int)]()))
+    freqs.sortWith((freqs1, freqs2) => freqs1._2 < freqs2._2).map((freqs3) => Leaf (freqs3._1, freqs3._2))
   }
 
   /**
