@@ -34,6 +34,11 @@ class HuffmanSuite extends FunSuite {
   }
 
 
+  test("times(List('x', 'q', 'e', 'x', 'q', 'x'))") {
+    assert(times(List('x', 'q', 'e', 'x', 'q', 'x')) === List(('x',3), ('q',2), ('e',1)))
+  }
+
+
   test("makeOrderedLeafList for some frequency table") {
     assert(makeOrderedLeafList(List(('t', 2), ('e', 1), ('x', 3))) === List(Leaf('e',1), Leaf('t',2), Leaf('x',3)))
   }
@@ -51,4 +56,9 @@ class HuffmanSuite extends FunSuite {
     }
   }
 
+  test("decode and encode a middle in length text should be identity") {
+    new TestTrees {
+      assert(decode(t2, encode(t2)("ab".toList)) === "ab".toList)
+    }
+  }
 }
